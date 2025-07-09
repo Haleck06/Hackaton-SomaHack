@@ -1,0 +1,35 @@
+CREATE DATABASE zahavamada;
+
+USE zahavamada;
+
+CREATE TABLE mpampiasa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    anarana VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    tenimiafina VARCHAR(255) NOT NULL,
+    daty_namoronana TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE toerana (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    anarana VARCHAR(100) NOT NULL,
+    lat DOUBLE NOT NULL,
+    lon DOUBLE NOT NULL,
+    famaritana TEXT
+);
+
+INSERT INTO toerana (anarana, lat, lon, famaritana) VALUES
+('Nosy Be', -13.4, 48.3, 'Nosy mahafinaritra any avaratra andrefan’i Madagasikara.'),
+('Andasibe-Mantadia', -18.95, 47.4, 'Valanjavaboahary manan-karena ao afovoan-tany.'),
+('Tsingy Bemaraha', -18.63, 44.8, 'Tany misy vatolampy miendrika manokana, voarakitra UNESCO.');
+
+
+- Tabilao ho an'ny foko
+- Tabilao ho an'ny karazana Fady
+- Tabilao momban'ny jeografia
+- Tabilao momban'ny tanatara
+- Tabilao momban'ny kolotsaina
+- Tabilao momban'ny filoha 
+- Tabilao momban'ny fivoarana
+ 

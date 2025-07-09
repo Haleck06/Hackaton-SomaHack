@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="mg">
+<head>
+  <meta charset="UTF-8">
+  <title>Mpanampy - ZAHAVA MADA</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #00843D;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .chatbox {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: linear-gradient(to bottom right, #ffffff, #ff0000, #00843D);
+    }
+
+    .chatbox img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 15px;
+      animation: bounce 1.5s infinite alternate;
+      border: 3px solid #00843D;
+    }
+
+    .chat-area {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .chat-log {
+      height: 250px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background: #f9f9f9;
+    }
+
+    .chat-log p {
+      margin: 8px 0;
+    }
+
+    .bot {
+      color: green;
+    }
+
+    .user {
+      color: #d80000;
+      text-align: right;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .chat-input button {
+      padding: 10px 20px;
+      background-color: #00843D;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    @keyframes bounce {
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(-10px); }
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: white;
+      border-top: 2px solid #ccc;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      z-index: 1000;
+    }
+
+    footer a {
+      color: #00843D;
+      text-decoration: none;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    footer a:hover {
+      color: #d80000;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ZAHAVA MADA</h1>
+  </header>
+
+  <div class="chatbox">
+    <img src="public/img/logo.jpg" alt="Logo ZAHAVA MADA">
+
+    <div class="chat-area">
+      <div class="chat-log" id="chat-log">
+        <p class="bot">🤖 Salama! Aho ny mpanampy anao. Anontanio aho momba ny fady, faritra, na foko! 🇲🇬</p>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Soraty eto...">
+        <button onclick="sendMessage()">Alefa</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="fandraisana.php">🏠 Fandraisana</a>
+    <a href="sarintany.php">🗺️ Sarintany</a>
+    <a href="mpanampy.html">🤖 Mpanampy</a>
+    <a href="mombamomba.php">👤 Mombamomba</a>
+  </footer>
+
+  <script>
+    const chatLog = document.getElementById("chat-log");
+    const userInput = document.getElementById("user-input");
+
+    function sendMessage() {
+      const message = userInput.value.trim();
+      if (message === "") return;
+
+      // Affichage utilisateur
+      const userMsg = document.createElement("p");
+      userMsg.textContent = "👤 " + message;
+      userMsg.className = "user";
+      chatLog.appendChild(userMsg);
+
+      userInput.value = "";
+
+      // Appel AJAX vers le fichier PHP
+      fetch("mpanampy.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: message })
+      })
+      .then(res => res.json())
+      .then(data => {
+        const botMsg = document.createElement("p");
+        botMsg.className = "bot";
+        botMsg.textContent = "🤖 " + data.response;
+        chatLog.appendChild(botMsg);
+        chatLog.scrollTop = chatLog.scrollHeight;
+        botMsg.innerHTML = data.response.replace(/\n/g, "<br>");
+      })
+      .catch(() => {
+        const errorMsg = document.createElement("p");
+        errorMsg.className = "bot";
+        errorMsg.textContent = "🤖 Nisy olana tamin'ny fifandraisana.";
+        chatLog.appendChild(errorMsg);
+      });
+    }
+
+    // Envoyer avec Enter
+    userInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
+
+</body>
+</html>
